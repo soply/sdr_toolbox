@@ -9,11 +9,12 @@ Journal of the American Statistical Association 86.414 (1991): 316-327.
 
 import numpy as np
 import scipy
-
-from partitioning.single_layer_levelset import split_statistically_equivalent_blocks
+from scipy.linalg import sqrtm
 from sklearn.covariance import EmpiricalCovariance
 from sklearn.preprocessing import StandardScaler
-from scipy.linalg import sqrtm
+
+from partitioning.single_layer_levelset import \
+    split_statistically_equivalent_blocks
 
 
 def sir(X, Y, **kwargs):
@@ -33,18 +34,22 @@ def sir(X, Y, **kwargs):
         'n_levelsets' : number of slices to use (int)
         'rescale' : Boolean whether standardization should be performed (True
                     for yes).
+        'return_mat' : Boolean whether key SIR matrix should be returned (defaults
+                    to False).
 
     Returns
     -----------
     proj_vecs : array-like, shape = [n_features, d]
         Orthonormal system spanning the sufficient dimension subspace, where
         d refers to the intrinsic dimension.
+
     }
     """
     # Extract arguments from dictionary
     d = kwargs['d']
     n_levelsets = kwargs['n_levelsets']
     rescale = kwargs['rescale']
+    return_mat = kwargs.get('return_mat', False)
 
     D, N = X.shape
     # Standardize X
@@ -73,4 +78,7 @@ def sir(X, Y, **kwargs):
         proj_vecs, dummy = np.linalg.qr(vecs)
     else:
         proj_vecs = U[:,:d]
-    return proj_vecs
+    if return_mat:
+        return proj_vecs, M
+    else:
+        return proj_vecs

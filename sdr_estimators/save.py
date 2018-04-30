@@ -9,11 +9,12 @@ Communications in statistics-Theory and methods 29.9-10 (2000): 2109-2121.
 
 import numpy as np
 import scipy
-
-from partitioning.single_layer_levelset import split_statistically_equivalent_blocks
+from scipy.linalg import sqrtm
 from sklearn.covariance import EmpiricalCovariance
 from sklearn.preprocessing import StandardScaler
-from scipy.linalg import sqrtm
+
+from partitioning.single_layer_levelset import \
+    split_statistically_equivalent_blocks
 
 
 def save(X, Y, **kwargs):
@@ -33,6 +34,8 @@ def save(X, Y, **kwargs):
         'n_levelsets' : number of slices to use (int)
         'rescale' : Boolean whether standardization should be performed (True
                     for yes).
+        'return_mat' : Boolean whether key SIR matrix should be returned (defaults
+                    to False).
 
     Returns
     -----------
@@ -45,6 +48,8 @@ def save(X, Y, **kwargs):
     d = kwargs['d']
     n_levelsets = kwargs['n_levelsets']
     rescale = kwargs['rescale']
+    return_mat = kwargs.get('return_mat', False)
+
 
     D, N = X.shape
     # Standardize X
@@ -75,4 +80,7 @@ def save(X, Y, **kwargs):
         proj_vecs, dummy = np.linalg.qr(vecs)
     else:
         proj_vecs = U[:,:d]
-    return proj_vecs
+    if return_mat:
+        return proj_vecs, M
+    else:
+        return proj_vecs
