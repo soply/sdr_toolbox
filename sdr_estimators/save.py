@@ -13,7 +13,7 @@ from scipy.linalg import sqrtm
 from sklearn.covariance import EmpiricalCovariance
 from sklearn.preprocessing import StandardScaler
 
-from partitioning.single_layer_levelset import \
+from ..partitioning.single_layer_levelset import \
     split_statistically_equivalent_blocks
 
 
@@ -60,7 +60,7 @@ def save(X, Y, **kwargs):
     scaler = StandardScaler()
     if rescale:
         Z = scaler.fit_transform(X.T).T
-    labels = split_statistically_equivalent_blocks(X, Y, n_levelsets)
+    labels, n_levelsets = split_statistically_equivalent_blocks(X, Y, n_levelsets)
     M = np.zeros((D, D)) # Key matrix in SAVE
     empirical_probabilities = np.zeros(n_levelsets)
     for i in range(n_levelsets):

@@ -13,7 +13,7 @@ from scipy.linalg import sqrtm
 from sklearn.covariance import EmpiricalCovariance
 from sklearn.preprocessing import StandardScaler
 
-from partitioning.single_layer_levelset import \
+from ..partitioning.single_layer_levelset import \
     split_statistically_equivalent_blocks
 
 
@@ -53,23 +53,23 @@ def sir(X, Y, **kwargs):
 
     D, N = X.shape
     # Standardize X
-    mean_all = np.mean(X, axis = 0)
+    mean_all = np.mean(X, axis = 1)
     scaler = StandardScaler()
     if rescale:
         emc = EmpiricalCovariance()
         emc = emc.fit(X.T) # Covariance of all samples
         cov_all = emc.covariance_
         Z = scaler.fit_transform(X.T).T
-    labels = split_statistically_equivalent_blocks(X, Y, n_levelsets)
+    labels, n_levelsets = split_statistically_equivalent_blocks(X, Y, n_levelsets)
     M = np.zeros((D, D)) # Key matrix in SIR
     empirical_probabilities = np.zeros(n_levelsets)
     for i in range(n_levelsets):
         empirical_probabilities[i] = float(len(np.where(labels == i)[0]))/float(N)
         if rescale:
-            slice_mean = np.mean(Z[:,labels == i], axis = 0)
+            slice_mean = np.mean(Z[:,labels == i], axis = 1)
             M += empirical_probabilities[i] * np.outer(slice_mean, slice_mean)
         else:
-            slice_mean = np.mean(X[:,labels == i], axis = 0)
+            slice_mean = np.mean(X[:,labels == i], axis = 1)
             M += empirical_probabilities[i] * np.outer(slice_mean, slice_mean)
     U, S, V = np.linalg.svd(M)
     if rescale:
