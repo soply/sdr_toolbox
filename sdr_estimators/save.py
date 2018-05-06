@@ -36,6 +36,7 @@ def save(X, Y, **kwargs):
                     for yes).
         'return_mat' : Boolean whether key SIR matrix should be returned (defaults
                     to False).
+    }
 
     Returns
     -----------
