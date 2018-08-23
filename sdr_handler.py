@@ -7,8 +7,11 @@ Handler to call any of the SDR estimators.
 from sdr_estimators.sir import sir
 from sdr_estimators.save import save
 from sdr_estimators.pca import pca
+from sdr_estimators.peakSSV import peakSSV
+from sdr_estimators.phd import phd
 
-__methods__ = ['SIR', 'SAVE', 'PCA']
+
+__methods__ = ['SIR', 'SAVE', 'PCA', 'peakSSV', 'PHD']
 
 
 def estimate_sdr(X, Y, method, **kwargs):
@@ -21,3 +24,7 @@ def estimate_sdr(X, Y, method, **kwargs):
         return save(X, Y, **kwargs)
     elif method == 'PCA':
         return pca(X, **kwargs)
+    elif method == 'peakSSV':
+        return peakSSV(X, **kwargs)
+    elif method == 'PHD':
+        return phd(X, Y, **kwargs)

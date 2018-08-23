@@ -59,9 +59,6 @@ def based_on_df(X, Y, deltaf):
     return labels, n_level_sets
 
 
-
-
-
 def split_statistically_equivalent_blocks(X, Y, n_splits):
     """ Splits the given data (X,Y) into statistically equivalent blocks
     (i.e. #points of two blocks differs at most by 1) based on the order
