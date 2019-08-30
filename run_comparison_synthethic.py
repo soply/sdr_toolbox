@@ -84,13 +84,13 @@ if __name__ == "__main__":
     print 'Using n_jobs = {0}'.format(n_jobs)
     # Define manifolds to test
     problems_ids = ['simple_division', 'pw_lin2','exp', 'exp3', 'sincos', 'sincosdivided'] # Problems to test
-    estimator_ids = ['SIR', 'SIRII', 'SAVE', 'PHD', 'DR', 'RCLR','RCLR_proxy','IHT', 'PHD']
+    estimator_ids = ['RCLR_proxy']
     # Parameters
     run_for = {
-        'N' : [200 * (2 ** i) for i in range(13)],
-        'D' : [5, 10, 20],
+        'N' : [50000],
+        'D' : [20],
         'sigma_f' : [0.01], # Standard deviation of function error
-        'repititions' : 20,
+        'repititions' : 3,
         # Estimator information
         'options' : {
             'split_by' : 'dyadic', # Inverse regression based techniques
@@ -98,7 +98,7 @@ if __name__ == "__main__":
             'whiten' : True,
             'return_mat' : False,
             'params' : {
-                'n_levelsets' : [i + 1 for i in range(1)],
+                'n_levelsets' : [i + 1 for i in range(100)],
             }
         }
     }
@@ -109,8 +109,8 @@ if __name__ == "__main__":
     for problem_id in problems_ids:
         for estimator_id in estimator_ids:
             print "Considering problem {0} with estimator {1}".format(problem_id, estimator_id)
-            savestr_base = 'run_1/'
-            filename_errors = 'results/' + savestr_base + problem_id + '/' + estimator_id + '' + savestr_base
+            savestr_base = 'rclr_proxy_test/'
+            filename_errors = 'results/' + savestr_base + problem_id + '/' + estimator_id
             try:
                 index_space_error = np.load(filename_errors + '/index_space_error.npy')
                 comp_time = np.load(filename_errors + '/comp_time.npy')

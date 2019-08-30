@@ -157,5 +157,5 @@ def rclr_parameterfree(X, Y, **kwargs):
         copy_kwargs['n_levelsets'] = i + 1
         copy_kwargs['return_proxy'] = True
         vecs[:,:,i], proxy[i] = rclr(X, Y, **copy_kwargs)
-    ind = np.argmin(proxy)
+    ind = np.argmin(proxy[d:])
     return vecs[:,:,ind], proxy

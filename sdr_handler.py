@@ -25,7 +25,7 @@ def estimate_sdr(X, Y, method, **kwargs):
     elif method == 'SIR':
         return sir(X, Y, **kwargs)
     elif method == 'SIRII':
-        return sir(X, Y, **kwargs)
+        return sirii(X, Y, **kwargs)
     elif method == 'SAVE':
         return save(X, Y, **kwargs)
     elif method == 'PCA':

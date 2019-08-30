@@ -57,7 +57,6 @@ def iht(X, Y, **kwargs):
     mean_all = np.mean(X, axis = 0)
     cov_all = empirical_covariance(X)
     weighted_cov = np.zeros(cov_all.shape)
-    import pdb; pdb.set_trace()
     if use_residuals:
         linreg = LinearRegression()
         linreg = linreg.fit(X, Y)
