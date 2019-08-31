@@ -64,8 +64,8 @@ def sirii(X, Y, **kwargs):
     for i in range(n_levelsets):
         if empirical_probabilities[i] == 0:
             continue
-        slice_mean = np.mean(Z[labels == i, :], axis = 0)
-        M2 += empirical_probabilities[i] * (np.outer(slice_mean, slice_mean) - M1).dot(np.outer(slice_mean, slice_mean) - M1)
+        cov_mean = empirical_covariance(Z[labels == i, :])
+        M2 += empirical_probabilities[i] * (cov_mean - M1).dot(cov_mean - M1)
     U, S, V = np.linalg.svd(M2)
     # Apply inverse transformation
     vecs = cov_all_sqrtinv.dot(U[:,:d])
