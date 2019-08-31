@@ -52,14 +52,14 @@ def sirii(X, Y, **kwargs):
     Z, cov_all_sqrtinv = whiten_data(X)
     # Create partition
     labels = split(Y, n_levelsets, split_by)
-    M1 = np.zeros((D, D)) # Container for E[Cov(X|Y)]
+    M1 = np.zeros((D, D)) # Container for E[Cov(Z|Y)]
     M2 = np.zeros((D, D)) # Container for key matrix in SIRII
     empirical_probabilities = np.zeros(n_levelsets)
     for i in range(n_levelsets):
         empirical_probabilities[i] = float(len(np.where(labels == i)[0]))/float(N)
         if empirical_probabilities[i] == 0:
             continue
-        M1 += empirical_probabilities[i] * empirical_covariance(X[labels == i, :])
+        M1 += empirical_probabilities[i] * empirical_covariance(Z[labels == i, :])
     # Compute SIRII matrix
     for i in range(n_levelsets):
         if empirical_probabilities[i] == 0:
