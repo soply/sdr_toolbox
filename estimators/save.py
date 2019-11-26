@@ -10,8 +10,8 @@ Communications in statistics-Theory and methods 29.9-10 (2000): 2109-2121.
 import numpy as np
 from sklearn.covariance import empirical_covariance
 
-from utils.whitening import whiten_data
-from utils.partitioning import split
+from estimators.utils.whitening import whiten_data
+from estimators.utils.partitioning import split
 
 
 def save(X, Y, **kwargs):

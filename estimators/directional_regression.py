@@ -5,8 +5,8 @@ import scipy
 from sklearn.covariance import empirical_covariance
 from scipy.linalg import sqrtm
 
-from utils.whitening import whiten_data
-from utils.partitioning import split
+from estimators.utils.whitening import whiten_data
+from estimators.utils.partitioning import split
 
 
 """

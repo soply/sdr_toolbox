@@ -13,10 +13,11 @@ from estimators.directional_regression import directional_regression
 from estimators.rclr import rclr, rclr_parameterfree
 from estimators.iht import iht
 from estimators.phd import phd
+from estimators.nndr import nndr
 
 
 
-__methods__ = ['SIR', 'SIRII', 'SAVE', 'PCA', 'PHD', 'DR', 'RCLR','RCLR_proxy','IHT', 'PHD']
+__methods__ = ['SIR', 'SIRII', 'SAVE', 'PCA', 'PHD', 'DR', 'RCLR','RCLR_proxy','IHT', 'PHD', 'NNDR']
 
 
 def estimate_sdr(X, Y, method, **kwargs):
@@ -42,3 +43,5 @@ def estimate_sdr(X, Y, method, **kwargs):
         return iht(X, Y, **kwargs)
     elif method == 'PHD':
         return iht(X, Y, **kwargs)
+    elif method == 'NNDR':
+        return nndr(X, Y, **kwargs)

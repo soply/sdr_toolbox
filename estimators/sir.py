@@ -8,8 +8,8 @@ Journal of the American Statistical Association 86.414 (1991): 316-327.
 """
 
 import numpy as np
-from utils.whitening import whiten_data
-from utils.partitioning import split
+from estimators.utils.whitening import whiten_data
+from estimators.utils.partitioning import split
 
 
 def sir(X, Y, **kwargs):

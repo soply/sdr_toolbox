@@ -12,8 +12,8 @@ import numpy as np
 from sklearn.covariance import empirical_covariance
 from sklearn.linear_model import LinearRegression
 
-from utils.whitening import whiten_data
-from utils.partitioning import split
+from estimators.utils.whitening import whiten_data
+from estimators.utils.partitioning import split
 
 
 def iht(X, Y, **kwargs):

@@ -13,7 +13,6 @@ os.environ["OPENBLAS_NUM_THREADS"] = "1"
 
 import json
 # I/O import
-import os
 import shutil
 import sys
 import tempfile
@@ -62,6 +61,14 @@ def run_example(N,
         end = time.time()
         index_space_error[i1, i2, i3, :, rep] = np.linalg.norm(vecs.dot(vecs.T) - basis.dot(basis.T))
         comp_time[i1, i2, i3, :, rep] = end - start
+    elif estimator_id in ['NNDR']:
+        start = time.time()
+        vecs = estimate_sdr(X, Y, method = estimator_id, d = d,
+                            L = 1, W = 200, n_epochs = 5000, reg_l2 = 0.01,
+                            verbose = False, **options)
+        end = time.time()
+        index_space_error[i1, i2, i3, :, rep] = np.linalg.norm(vecs.dot(vecs.T) - basis.dot(basis.T))
+        comp_time[i1, i2, i3, :, rep] = end - start
     else:
         for i, j in enumerate(levelsets_to_test):
             start = time.time()
@@ -71,8 +78,8 @@ def run_example(N,
             comp_time[i1, i2, i3, i, rep] = end - start
     # Check if crossvalidation is done
     # Setting the test manifold, check synthethic_problem_factory.curves
-    print "Finished N = {0}     D = {1}     sigma_f = {2}   rep = {3}".format(
-        N, D, sigma_f, rep)
+    print("Finished N = {0}     D = {1}     sigma_f = {2}   rep = {3}".format(
+        N, D, sigma_f, rep))
 
 
 if __name__ == "__main__":
@@ -81,16 +88,16 @@ if __name__ == "__main__":
         n_jobs = int(sys.argv[1])
     else:
         n_jobs = 1 # Default 1 jobs
-    print 'Using n_jobs = {0}'.format(n_jobs)
+    print('Using n_jobs = {0}'.format(n_jobs))
     # Define manifolds to test
-    problems_ids = ['simple_division', 'pw_lin2','exp', 'exp3', 'sincos', 'sincosdivided'] # Problems to test
-    estimator_ids = ['RCLR_proxy']
+    problems_ids = ['simple_division']#, 'pw_lin2','exp', 'exp3', 'sincos', 'sincosdivided'] # Problems to test
+    estimator_ids = ['NNDR']
     # Parameters
     run_for = {
-        'N' : [50000],
+        'N' : [100, 200, 400, 800],
         'D' : [20],
         'sigma_f' : [0.01], # Standard deviation of function error
-        'repititions' : 3,
+        'repititions' : 1,
         # Estimator information
         'options' : {
             'split_by' : 'dyadic', # Inverse regression based techniques
@@ -108,12 +115,12 @@ if __name__ == "__main__":
                                                           run_for['repititions']))
     for problem_id in problems_ids:
         for estimator_id in estimator_ids:
-            print "Considering problem {0} with estimator {1}".format(problem_id, estimator_id)
-            savestr_base = 'rclr_proxy_test/'
+            print("Considering problem {0} with estimator {1}".format(problem_id, estimator_id))
+            savestr_base = 'nndr_test/'
             filename_errors = 'results/' + savestr_base + problem_id + '/' + estimator_id
             try:
-                index_space_error = np.load(filename_errors + '/index_space_error.npy')
-                comp_time = np.load(filename_errors + '/comp_time.npy')
+                index_space_error = np.load(filename_errors + '/index_space_error.npy', allow_pickle = True)
+                comp_time = np.load(filename_errors + '/comp_time.npy', allow_pickle = True)
             except IOError:
                 if not os.path.exists(filename_errors):
                     os.makedirs(filename_errors)

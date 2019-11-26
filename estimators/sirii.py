@@ -10,8 +10,8 @@ Journal of the American Statistical Association 86.414 (1991): 316-327.
 import numpy as np
 from sklearn.covariance import empirical_covariance
 
-from utils.whitening import whiten_data
-from utils.partitioning import split
+from estimators.utils.whitening import whiten_data
+from estimators.utils.partitioning import split
 
 
 def sirii(X, Y, **kwargs):
@@ -64,8 +64,8 @@ def sirii(X, Y, **kwargs):
     for i in range(n_levelsets):
         if empirical_probabilities[i] == 0:
             continue
-        cov_mean = empirical_covariance(Z[labels == i, :])
-        M2 += empirical_probabilities[i] * (cov_mean - M1).dot(cov_mean - M1)
+        slice_cov = empirical_covariance(Z[labels == i, :])
+        M2 += empirical_probabilities[i] * (slice_cov - M1).dot(slice_cov - M1)
     U, S, V = np.linalg.svd(M2)
     # Apply inverse transformation
     vecs = cov_all_sqrtinv.dot(U[:,:d])
